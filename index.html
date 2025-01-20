@@ -33,20 +33,77 @@
     </section>
 
     <section id="turnaj">
-        <h2>Turnaj #1</h2>
-        <div class="group">
-            <h3>Skupina A</h3>
-            <ul id="group-a-matches">
-                <!-- Zápasy skupiny A -->
-            </ul>
-        </div>
-        <div class="group">
-            <h3>Skupina B</h3>
-            <ul id="group-b-matches">
-                <!-- Zápasy skupiny B -->
-            </ul>
-        </div>
-    </section>
+    <h2>Turnaj #1</h2>
+
+    <!-- Skupina A -->
+    <div class="group">
+        <h3>Skupina A</h3>
+        <table id="group-a-matches">
+            <thead>
+                <tr>
+                    <th>Match</th>
+                    <th>Team 1</th>
+                    <th>Team 2</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Match 1</td>
+                    <td>Team A</td>
+                    <td>Team B</td>
+                    <td><a href="javascript:void(0);" onclick="openMatchDetails('Match 1')">Open</a></td>
+                </tr>
+                <tr>
+                    <td>Match 2</td>
+                    <td>Team C</td>
+                    <td>Team D</td>
+                    <td><a href="javascript:void(0);" onclick="openMatchDetails('Match 2')">Open</a></td>
+                </tr>
+                <!-- Přidej další zápasy pro Skupinu A -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Skupina B -->
+    <div class="group">
+        <h3>Skupina B</h3>
+        <table id="group-b-matches">
+            <thead>
+                <tr>
+                    <th>Match</th>
+                    <th>Team 1</th>
+                    <th>Team 2</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Match 1</td>
+                    <td>Team E</td>
+                    <td>Team F</td>
+                    <td><a href="javascript:void(0);" onclick="openMatchDetails('Match 1')">Open</a></td>
+                </tr>
+                <tr>
+                    <td>Match 2</td>
+                    <td>Team G</td>
+                    <td>Team H</td>
+                    <td><a href="javascript:void(0);" onclick="openMatchDetails('Match 2')">Open</a></td>
+                </tr>
+                <!-- Přidej další zápasy pro Skupinu B -->
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<script>
+    // Funkce pro otevření zápasu v novém okně
+    function openMatchDetails(match) {
+        window.open('match-details.html?match=' + match, '_blank', 'width=600,height=400');
+    }
+</script>
+
 
     <footer id="kontakt">
         <h2>Kontakt</h2>
