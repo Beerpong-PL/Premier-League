@@ -19,11 +19,11 @@
             <div>
                 <h3>3v3 Zápas</h3>
                 <label for="team1-3v3">Tým 1: </label>
-                <select id="team1-3v3" name="team1-3v3" multiple>
+                <select id="team1-3v3" name="team1-3v3" multiple size="3">
                     <!-- Dynamicky naplněno hráči -->
                 </select>
                 <label for="team2-3v3">Tým 2: </label>
-                <select id="team2-3v3" name="team2-3v3" multiple>
+                <select id="team2-3v3" name="team2-3v3" multiple size="3">
                     <!-- Dynamicky naplněno hráči -->
                 </select>
             </div>
@@ -32,11 +32,11 @@
             <div>
                 <h3>2v2 Zápas</h3>
                 <label for="team1-2v2">Tým 1: </label>
-                <select id="team1-2v2" name="team1-2v2" multiple>
+                <select id="team1-2v2" name="team1-2v2" multiple size="2">
                     <!-- Dynamicky naplněno hráči -->
                 </select>
                 <label for="team2-2v2">Tým 2: </label>
-                <select id="team2-2v2" name="team2-2v2" multiple>
+                <select id="team2-2v2" name="team2-2v2" multiple size="2">
                     <!-- Dynamicky naplněno hráči -->
                 </select>
             </div>
@@ -87,16 +87,19 @@
         // Funkce pro naplnění výběrů hráčů
         function populateSelects() {
             const selects = [
-                { selectId: 'team1-3v3', players: team1Players },
-                { selectId: 'team2-3v3', players: team2Players },
-                { selectId: 'team1-2v2', players: team1Players },
-                { selectId: 'team2-2v2', players: team2Players },
-                { selectId: 'team1-1v1', players: team1Players },
-                { selectId: 'team2-1v1', players: team2Players },
+                { selectId: 'team1-3v3', players: team1Players, size: 3 },
+                { selectId: 'team2-3v3', players: team2Players, size: 3 },
+                { selectId: 'team1-2v2', players: team1Players, size: 2 },
+                { selectId: 'team2-2v2', players: team2Players, size: 2 },
+                { selectId: 'team1-1v1', players: team1Players, size: 1 },
+                { selectId: 'team2-1v1', players: team2Players, size: 1 },
             ];
 
-            selects.forEach(({ selectId, players }) => {
+            selects.forEach(({ selectId, players, size }) => {
                 const selectElement = document.getElementById(selectId);
+                // Vymažeme stávající možnosti
+                selectElement.innerHTML = "";
+                selectElement.size = size; // Nastavení velikosti podle počtu hráčů pro výběr
                 players.forEach(player => {
                     const option = document.createElement('option');
                     option.value = player.id;
