@@ -54,13 +54,13 @@
             <div>
                 <h3>1v1 Zápas</h3>
                 <label for="team1-1v1">Tým 1: </label>
-                <select id="team1-1v1" name="team1-1v1">
+                <div class="team-select" id="team1-1v1">
                     <!-- Dynamicky naplněno hráči -->
-                </select>
+                </div>
                 <label for="team2-1v1">Tým 2: </label>
-                <select id="team2-1v1" name="team2-1v1">
+                <div class="team-select" id="team2-1v1">
                     <!-- Dynamicky naplněno hráči -->
-                </select>
+                </div>
             </div>
 
             <button type="submit">Potvrdit nastavení</button>
@@ -100,8 +100,8 @@
                 { selectId: 'team2-3v3', players: team2Players, count: 3 },
                 { selectId: 'team1-2v2', players: team1Players, count: 2 },
                 { selectId: 'team2-2v2', players: team2Players, count: 2 },
-                { selectId: 'team1-1v1', players: team1Players},
-                { selectId: 'team2-1v1', players: team2Players}
+                { selectId: 'team1-1v1', players: team1Players, count: 1 },
+                { selectId: 'team2-1v1', players: team2Players, count: 1 }
             ];
 
             selects.forEach(({ selectId, players, count }) => {
