@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beer Pong Úspěšnost</title>
+    <title>Beerpong Týmy</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Počítání úspěšnosti hodů v Beer Pongu</h1>
-        
-        <form id="pongForm">
-            <label for="totalThrows">Celkový počet hodů:</label>
-            <input type="number" id="totalThrows" required>
+        <h1>Výběr týmů pro Beer Pong</h1>
 
-            <label for="successfulThrows">Počet úspěšných hodů:</label>
-            <input type="number" id="successfulThrows" required>
+        <label for="team1">Vyberte první tým:</label>
+        <select id="team1" onchange="updatePlayers()">
+            <option value="">--Vyber tým--</option>
+        </select>
 
-            <button type="submit">Spočítat úspěšnost</button>
-        </form>
+        <label for="team2">Vyberte druhý tým:</label>
+        <select id="team2" onchange="updatePlayers()">
+            <option value="">--Vyber tým--</option>
+        </select>
 
-        <div id="result">
-            <h2>Výsledek:</h2>
-            <p id="percentage">0%</p>
-        </div>
+        <div id="playerSelection"></div>
+
+        <button id="startGameBtn" onclick="startGame()">Začít hru</button>
+
+        <div id="gameResult"></div>
     </div>
 
     <script src="script.js"></script>
