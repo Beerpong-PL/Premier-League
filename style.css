@@ -1,3 +1,56 @@
+/* Stylování tabulky pro rovnoměrné mezery mezi sloupci */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Spojí okraje mezi buňkami */
+}
+
+th, td {
+    padding: 10px; /* Vytvoří stejné mezery mezi buňkami */
+    text-align: center; /* Zarovná text na střed */
+    border: 1px solid #ddd; /* Přidá jemný okraj mezi buňkami */
+}
+
+th {
+    background-color: #f4f4f4; /* Světle šedé pozadí pro hlavičky */
+}
+
+/* Zajištění vyváženého vzhledu pro celý layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
