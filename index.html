@@ -41,8 +41,8 @@
             <table id="group-a-matches">
                 <thead>
                     <tr>
-                        <th>Match</th>
                         <th>Team 1</th>
+                        <th>VS</th>
                         <th>Team 2</th>
                         <th>Hrát</th>
                     </tr>
@@ -59,8 +59,8 @@
             <table id="group-b-matches">
                 <thead>
                     <tr>
-                        <th>Match</th>
                         <th>Team 1</th>
+                        <th>VS</th>
                         <th>Team 2</th>
                         <th>Hrát</th>
                     </tr>
@@ -85,21 +85,20 @@
         }
 
         // Předdefinovaní hráči s opraveným názvem klíče 'team' místo 'teams'
-const players = [
-    { id: 1, name: 'Fanda', team: 'BPC Praha' },
-    { id: 2, name: 'Saša', team: 'BPC Praha' },
-    { id: 3, name: 'Míra', team: 'BPC Praha' },
-    { id: 4, name: 'Julča', team: 'BPC Praha' },
-    { id: 5, name: 'Fasty', team: 'BPC Praha' },
-    { id: 6, name: 'Adam', team: 'BPC Praha' },
-    { id: 7, name: 'Dodo', team: 'BPC Votice' },
-    { id: 8, name: 'Písa', team: 'BPC Votice' },
-    { id: 9, name: 'Buky', team: 'BPC Votice' },
-    { id: 10, name: 'Kuba', team: 'BPC Votice' },
-    { id: 11, name: 'Terka', team: 'BPC Votice' },
-    { id: 12, name: 'Lucka', team: 'BPC Votice' }
-];
-
+        const players = [
+            { id: 1, name: 'Fanda', team: 'BPC Praha' },
+            { id: 2, name: 'Saša', team: 'BPC Praha' },
+            { id: 3, name: 'Míra', team: 'BPC Praha' },
+            { id: 4, name: 'Julča', team: 'BPC Praha' },
+            { id: 5, name: 'Fasty', team: 'BPC Praha' },
+            { id: 6, name: 'Adam', team: 'BPC Praha' },
+            { id: 7, name: 'Dodo', team: 'BPC Votice' },
+            { id: 8, name: 'Písa', team: 'BPC Votice' },
+            { id: 9, name: 'Buky', team: 'BPC Votice' },
+            { id: 10, name: 'Kuba', team: 'BPC Votice' },
+            { id: 11, name: 'Terka', team: 'BPC Votice' },
+            { id: 12, name: 'Lucka', team: 'BPC Votice' }
+        ];
 
         // Seznam týmů
         const teams = [
@@ -138,8 +137,8 @@ const players = [
             const row = document.createElement("tr");
             const [team1, team2] = match.split(" vs ");
             row.innerHTML = `
-                <td>${match}</td>
                 <td>${team1}</td>
+                <td>VS</td>
                 <td>${team2}</td>
                 <td><a href="javascript:void(0);" onclick="openMatchDetails('${match}')">Open</a></td>
             `;
@@ -153,8 +152,8 @@ const players = [
             const row = document.createElement("tr");
             const [team1, team2] = match.split(" vs ");
             row.innerHTML = `
-                <td>${match}</td>
                 <td>${team1}</td>
+                <td>VS</td>
                 <td>${team2}</td>
                 <td><a href="javascript:void(0);" onclick="openMatchDetails('${match}')">Open</a></td>
             `;
