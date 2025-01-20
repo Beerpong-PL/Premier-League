@@ -113,7 +113,7 @@
                 if (count > 1) {
                     for (let i = 0; i < count; i++) {
                         const select = document.createElement('select');
-                        select.name = ${selectId}-player${i + 1};
+                        select.name = `${selectId}-player${i + 1}`; // Opravené interpolace
                         players.forEach(player => {
                             const option = document.createElement('option');
                             option.value = player.id;
@@ -125,7 +125,7 @@
                 } else {
                     // Pro 1v1 se používá jeden select
                     const select = document.createElement('select');
-                    select.name = ${selectId}-player1;
+                    select.name = `${selectId}-player1`; // Opravené interpolace
                     players.forEach(player => {
                         const option = document.createElement('option');
                         option.value = player.id;
