@@ -2,31 +2,52 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beerpong Týmy</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Česká Beerpongová Premier League</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Výběr týmů pro Beer Pong</h1>
+    <header>
+        <h1>Česká Beerpongová Premier League</h1>
+        <nav>
+            <ul>
+                <li><a href="#o-lize">O lize</a></li>
+                <li><a href="#tymy">Týmy</a></li>
+                <li><a href="#rozpis">Rozpis zápasů</a></li>
+                <li><a href="#tabulka">Tabulka</a></li>
+                <li><a href="#pravidla">Pravidla</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <label for="team1">Vyberte první tým:</label>
-        <select id="team1" onchange="updatePlayers()">
-            <option value="">--Vyber tým--</option>
-        </select>
+    <section id="o-lize">
+        <h2>O lize</h2>
+        <p>Vítejte v České Beerpongové Premier League! Naším cílem je propagovat a organizovat soutěže v beerpongu po celé České republice.</p>
+    </section>
 
-        <label for="team2">Vyberte druhý tým:</label>
-        <select id="team2" onchange="updatePlayers()">
-            <option value="">--Vyber tým--</option>
-        </select>
+    <section id="tymy">
+        <h2>Týmy</h2>
+        <p>Seznam týmů bude brzy aktualizován.</p>
+    </section>
 
-        <div id="playerSelection"></div>
+    <section id="rozpis">
+        <h2>Rozpis zápasů</h2>
+        <p>Rozpis zápasů bude brzy zveřejněn.</p>
+    </section>
 
-        <button id="startGameBtn" onclick="startGame()">Začít hru</button>
+    <section id="tabulka">
+        <h2>Tabulka</h2>
+        <p>Aktuální tabulka bude brzy dostupná.</p>
+    </section>
 
-        <div id="gameResult"></div>
-    </div>
+    <section id="pravidla">
+        <h2>Pravidla</h2>
+        <p>Podrobná pravidla ligy budou brzy k dispozici.</p>
+    </section>
 
-    <script src="script.js"></script>
+    <footer id="kontakt">
+        <h2>Kontakt</h2>
+        <p>Pro více informací nás kontaktujte na emailu: info@beerpongliga.cz</p>
+    </footer>
 </body>
 </html>
