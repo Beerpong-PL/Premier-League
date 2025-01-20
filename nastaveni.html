@@ -158,4 +158,14 @@
             // Uložení vybraných hráčů
             formData.forEach((value, key) => {
                 selectedPlayers[key] = value;
-           
+            });
+
+            // Uložení vybraných hráčů do localStorage nebo poslat na server
+            localStorage.setItem('selectedPlayers', JSON.stringify(selectedPlayers));
+
+            // Potvrzení a přechod na další stránku
+            window.location.href = 'zapas.html';  // Nebo jakákoli další stránka pro vykonání zápasu
+        });
+    </script>
+</body>
+</html>
