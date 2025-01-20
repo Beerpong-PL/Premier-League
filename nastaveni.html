@@ -100,8 +100,8 @@
                 { selectId: 'team2-3v3', players: team2Players, count: 3 },
                 { selectId: 'team1-2v2', players: team1Players, count: 2 },
                 { selectId: 'team2-2v2', players: team2Players, count: 2 },
-                { selectId: 'team1-1v1', players: team1Players },
-                { selectId: 'team2-1v1', players: team2Players }
+                { selectId: 'team1-1v1', players: team1Players, count: 1 },
+                { selectId: 'team2-1v1', players: team2Players, count: 1 }
             ];
 
             selects.forEach(({ selectId, players, count }) => {
@@ -109,13 +109,31 @@
                 // Vymažeme stávající možnosti
                 selectElement.innerHTML = "";
 
-                // Přidáme výběry pro každého hráče
-                players.slice(0, count || players.length).forEach(player => {
-                    const option = document.createElement('option');
-                    option.value = player.id;
-                    option.textContent = player.name;
-                    selectElement.appendChild(option);
-                });
+                // Pokud je to 3v3 nebo 2v2, přidáme více rolovacích seznamů
+                if (count > 1) {
+                    for (let i = 0; i < count; i++) {
+                        const select = document.createElement('select');
+                        select.name = `${selectId}-player${i + 1}`; // Opravené interpolace
+                        players.forEach(player => {
+                            const option = document.createElement('option');
+                            option.value = player.id;
+                            option.textContent = player.name;
+                            select.appendChild(option);
+                        });
+                        selectElement.appendChild(select);
+                    }
+                } else {
+                    // Pro 1v1 se používá jeden select
+                    const select = document.createElement('select');
+                    select.name = `${selectId}-player1`; // Opravené interpolace
+                    players.forEach(player => {
+                        const option = document.createElement('option');
+                        option.value = player.id;
+                        option.textContent = player.name;
+                        select.appendChild(option);
+                    });
+                    selectElement.appendChild(select);
+                }
             });
         }
 
