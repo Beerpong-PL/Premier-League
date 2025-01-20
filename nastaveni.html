@@ -95,27 +95,29 @@
 
         // Funkce pro naplnění výběrů hráčů
         function populateSelects() {
-    const selects = [
-        { selectId: 'team1-3v3', players: team1Players, count: 3 },
-        { selectId: 'team2-3v3', players: team2Players, count: 3 },
-        { selectId: 'team1-2v2', players: team1Players, count: 2 },
-        { selectId: 'team2-2v2', players: team2Players, count: 2 },
-        { selectId: 'team1-1v1', players: team1Players },
-        { selectId: 'team2-1v1', players: team2Players }
-    ];
+            const selects = [
+                { selectId: 'team1-3v3', players: team1Players, count: 3 },
+                { selectId: 'team2-3v3', players: team2Players, count: 3 },
+                { selectId: 'team1-2v2', players: team1Players, count: 2 },
+                { selectId: 'team2-2v2', players: team2Players, count: 2 },
+                { selectId: 'team1-1v1', players: team1Players },
+                { selectId: 'team2-1v1', players: team2Players }
+            ];
 
-    selects.forEach(({ selectId, players, count }) => {
-        const selectElement = document.getElementById(selectId);
-        selectElement.innerHTML = ""; // Clear existing options
+            selects.forEach(({ selectId, players, count }) => {
+                const selectElement = document.getElementById(selectId);
+                // Vymažeme stávající možnosti
+                selectElement.innerHTML = "";
 
-        for (let i = 0; i < count || players.length; i++) {
-            const option = document.createElement('option');
-            option.value = players[i].id;
-            option.textContent = players[i].name;
-            selectElement.appendChild(option);
+                // Přidáme výběry pro každého hráče
+                players.slice(0, count || players.length).forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player.id;
+                    option.textContent = player.name;
+                    selectElement.appendChild(option);
+                });
+            });
         }
-    });
-}
 
         // Naplnit výběry hráčů
         populateSelects();
