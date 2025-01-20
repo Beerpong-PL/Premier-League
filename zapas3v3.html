@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zápas 3v3</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .team-section {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .team-section .player-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .team-section .player-buttons button {
+            padding: 10px;
+            background-color: #4CAF50; /* Zelené */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .team-section .player-buttons button:disabled {
+            background-color: #c0c0c0;
+        }
+        .statistics {
+            margin: 20px 0;
+        }
+        .statistics table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .statistics table th, .statistics table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .miss-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .miss-buttons button {
+            padding: 10px;
+            background-color: #f44336; /* Červené */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Zápas 3v3</h1>
+    </header>
+
+    <section class="team-section">
+        <div>
+            <h3>Tým 1</h3>
+            <div class="player-buttons" id="team1-buttons">
+                <!-- Dynamicky naplněné tlačítky pro hráče -->
+            </div>
+        </div>
+
+        <div>
+            <h3>Statistiky</h3>
+            <div class="statistics">
+                <table id="statistics-table">
+                    <thead>
+                        <tr>
+                            <th>Jméno hráče</th>
+                            <th>Trefené / Hod</th>
+                            <th>Úspěšnost (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamicky naplněno statistikami hráčů -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <h3>Tým 2</h3>
+            <div class="player-buttons" id="team2-buttons">
+                <!-- Dynamicky naplněné tlačítky pro hráče -->
+            </div>
+        </div>
+    </section>
+
+    <section class="miss-buttons">
+        <div>
+            <h3>Neúspěšné hody</h3>
+            <div id="team1-miss-buttons">
+                <!-- Dynamicky naplněné tlačítky pro minulé hráče -->
+            </div>
+        </div>
+
+        <div>
+            <h3>Neúspěšné hody</h3>
+            <div id="team2-miss-buttons">
+                <!-- Dynamicky naplněné tlačítky pro minulé hráče -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Načíst vybrané hráče z localStorage
+        const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers')) || {};
+
+        // Seznam hráčů pro tým 1 a tým 2
+        const team1Players = selectedPlayers['team1-3v3'].split(',').map(playerId => parseInt(playerId));
+        const team2Players = selectedPlayers['team2-3v3'].split(',').map(playerId => parseInt(playerId));
+
+        // Předdefinovaní hráči (stejně jako v předchozím kódu)
+        const players = [
+            { id: 1, name: 'Fanda', team: 'BPC Praha' },
+            { id: 2, name: 'Saša', team: 'BPC Praha' },
+            { id: 3, name: 'Míra', team: 'BPC Praha' },
+            { id: 4, name: 'Julča', team: 'BPC Praha' },
+            { id: 5, name: 'Fasty', team: 'BPC Praha' },
+            { id: 6, name: 'Adam', team: 'BPC Praha' },
+            { id: 7, name: 'Dodo', team: 'BPC Votice' },
+            { id: 8, name: 'Písa', team: 'BPC Votice' },
+            { id: 9, name: 'Buky', team: 'BPC Votice' },
+            { id: 10, name: 'Kuba', team: 'BPC Votice' },
+            { id: 11, name: 'Terka', team: 'BPC Votice' },
+            { id: 12, name: 'Lucka', team: 'BPC Votice' }
+        ];
+
+        // Funkce pro získání hráče podle ID
+        function getPlayerById(id) {
+            return players.find(player => player.id === id);
+        }
+
+        // Funkce pro naplnění tlačítek a statistik
+        function populateMatchPage() {
+            // Tlačítka pro tým 1
+            const team1Buttons = document.getElementById('team1-buttons');
+            team1Players.forEach(playerId => {
+                const player = getPlayerById(playerId);
+                const button = document.createElement('button');
+                button.textContent = player.name;
+                button.onclick = function () { recordHit(player.id, 'team1'); };
+                team1Buttons.appendChild(button);
+            });
+
+            // Tlačítka pro tým 2
+            const team2Buttons = document.getElementById('team2-buttons');
+            team2Players.forEach(playerId => {
+                const player = getPlayerById(playerId);
+                const button = document.createElement('button');
+                button.textContent = player.name;
+                button.onclick = function () { recordHit(player.id, 'team2'); };
+                team2Buttons.appendChild(button);
+            });
+
+            // Statistiky
+            const statisticsTableBody = document.getElementById('statistics-table').getElementsByTagName('tbody')[0];
+            [...team1Players, ...team2Players].forEach(playerId => {
+                const player = getPlayerById(playerId);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${player.name}</td>
+                    <td id="stats-${player.id}">0 / 0</td>
+                    <td id="percent-${player.id}">0%</td>
+                `;
+                statisticsTableBody.appendChild(row);
+            });
+
+            // Tlačítka pro minulé hody pro tým 1
+            const team1MissButtons = document.getElementById('team1-miss-buttons');
+            team1Players.forEach(playerId => {
+                const player = getPlayerById(playerId);
+                const button = document.createElement('button');
+                button.textContent = player.name;
+                button.onclick = function () { recordMiss(player.id, 'team1'); };
+                team1MissButtons.appendChild(button);
+            });
+
+            // Tlačítka pro minulé hody pro tým 2
+            const team2MissButtons = document.getElementById('team2-miss-buttons');
+            team2Players.forEach(playerId => {
+                const player = getPlayerById(playerId);
+                const button = document.createElement('button');
+                button.textContent = player.name;
+                button.onclick = function () { recordMiss(player.id, 'team2'); };
+                team2MissButtons.appendChild(button);
+            });
+        }
+
+        // Funkce pro zaznamenání trefeného kelímku
+        function recordHit(playerId, team) {
+            const statsCell = document.getElementById(`stats-${playerId}`);
+            const currentStats = statsCell.textContent.split(' / ');
+            const hits = parseInt(currentStats[0]) + 1;
+            const throws = parseInt(currentStats[1]) + 1;
+            statsCell.textContent = `${hits} / ${throws}`;
+            updatePercentage(playerId, hits, throws);
+        }
+
+        // Funkce pro zaznamenání minutého kelímku
+        function recordMiss(playerId, team) {
+            const statsCell = document.getElementById(`stats-${playerId}`);
+            const currentStats = statsCell.textContent.split(' / ');
+            const hits = parseInt(currentStats[0]);
+            const throws = parseInt(currentStats[1]) + 1;
+            statsCell.textContent = `${hits} / ${throws}`;
+            updatePercentage(playerId, hits, throws);
+        }
+
+        // Funkce pro aktualizaci procentuální úspěšnosti
+        function updatePercentage(playerId, hits, throws) {
+            const percentage = (hits / throws * 100).toFixed(2);
+            document.getElementById(`percent-${playerId}`).textContent = `${percentage}%`;
+        }
+
+        // Spuštění funkce pro naplnění stránky
+        populateMatchPage();
+    </script>
+</body>
+</html>
