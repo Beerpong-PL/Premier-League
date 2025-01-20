@@ -80,9 +80,17 @@
 
     <script>
         // Funkce pro otevření zápasu v novém okně
-        function openMatchDetails(match) {
-            window.open('match-details.html?match=' + match, '_blank', 'width=600,height=400');
-        }
+        // Funkce pro otevření zápasu v nastavení
+function openMatchDetails(match) {
+    const [team1, team2] = match.split(" vs ");
+    const params = new URLSearchParams({
+        team1: team1,
+        team2: team2
+    }).toString();
+
+    window.open('nastaveni.html?' + params, '_blank', 'width=600,height=400');
+}
+
 
         // Předdefinovaní hráči s opraveným názvem klíče 'team' místo 'teams'
         const players = [
