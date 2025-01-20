@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nastavení zápasu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Nastavení zápasu</h1>
+    </header>
+
+    <section id="nastaveni">
+        <h2>Vyberte hráče pro jednotlivé zápasy</h2>
+        
+        <form id="settings-form">
+            <div>
+                <h3>3v3 Zápas</h3>
+                <label for="team1-3v3">Tým 1: </label>
+                <select id="team1-3v3" name="team1-3v3">
+                    <!-- Dynamicky naplněno týmy -->
+                </select>
+                <label for="team2-3v3">Tým 2: </label>
+                <select id="team2-3v3" name="team2-3v3">
+                    <!-- Dynamicky naplněno týmy -->
+                </select>
+            </div>
+
+            <div>
+                <h3>2v2 Zápas</h3>
+                <label for="team1-2v2">Tým 1: </label>
+                <select id="team1-2v2" name="team1-2v2">
+                    <!-- Dynamicky naplněno týmy -->
+                </select>
+                <label for="team2-2v2">Tým 2: </label>
+                <select id="team2-2v2" name="team2-2v2">
+                    <!-- Dynamicky naplněno týmy -->
+                </select>
+            </div>
+
+            <div>
+                <h3>1v1 Zápas</h3>
+                <label for="team1-1v1">Tým 1: </label>
+                <select id="team1-1v1" name="team1-1v1">
+                    <!-- Dynamicky naplněno týmy -->
+                </select>
+                <label for="team2-1v1">Tým 2: </label>
+                <select id="team2-1v1" name="team2-1v1">
+                    <!-- Dynamicky naplněno týmy -->
+                </select>
+            </div>
+
+            <div>
+                <h3>Určete tým, který začne</h3>
+                <label for="starting-team">Vyberte tým:</label>
+                <select id="starting-team" name="starting-team">
+                    <option value="team1">Tým 1</option>
+                    <option value="team2">Tým 2</option>
+                </select>
+            </div>
+
+            <button type="submit">Potvrdit nastavení</button>
+        </form>
+    </section>
+
+    <script>
+        // Předdefinované týmy
+        const teams = [
+            "BPC Příbram", "BPC Kosova Hora", "BPC Struhařov", "BPV Svatá Máří",
+            "BPC Kostelec nad Orlicí", "BPC Praha", "BPC Votice", "BPC Brno",
+            "Kozleři Mirošov", "BPC Plzeň"
+        ];
+        // Načítání parametrů z URL
+const urlParams = new URLSearchParams(window.location.search);
+const team1 = urlParams.get('team1');
+const team2 = urlParams.get('team2');
+
+// Předvyplnění týmů do formuláře
+document.getElementById('team1-3v3').value = team1;
+document.getElementById('team2-3v3').value = team2;
+document.getElementById('team1-2v2').value = team1;
+document.getElementById('team2-2v2').value = team2;
+document.getElementById('team1-1v1').value = team1;
+document.getElementById('team2-1v1').value = team2;
+
+        // Dynamicky naplnit výběr týmů
+        function populateTeams() {
+            const selects = [
+                'team1-3v3', 'team2-3v3', 'team1-2v2', 'team2-2v2', 'team1-1v1', 'team2-1v1', 'starting-team'
+            ];
+
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                teams.forEach(team => {
+                    const option = document.createElement("option");
+                    option.value = team;
+                    option.textContent = team;
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        // Spustit funkci pro naplnění týmů
+        populateTeams();
+        
+        // Odeslání formuláře a přechod na stránku s výsledky
+        document.getElementById("settings-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const settings = {};
+            formData.forEach((value, key) => {
+                settings[key] = value;
+            });
+
+            // Uložení nastavení do localStorage nebo poslat na server pro další zpracování
+            localStorage.setItem('gameSettings', JSON.stringify(settings));
+
+            // Přejít na stránku s výsledky nebo zápasy
+            window.location.href = 'zapas.html'; // Předpokládáme, že zápas bude na jiné stránce
+        });
+    </script>
+</body>
+</html>
