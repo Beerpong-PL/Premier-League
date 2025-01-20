@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nastavení zápasu</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .team-select {
+            display: flex;
+            gap: 10px;
+        }
+        .team-select select {
+            width: 150px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -18,37 +27,37 @@
             <!-- Výběr hráčů pro 3v3 -->
             <div>
                 <h3>3v3 Zápas</h3>
-                <label for="team1-3v3">Tým 1: </label>
-                <select id="team1-3v3" name="team1-3v3" multiple size="3">
+                <label for="team1-3v3" id="team1-label-3v3">Tým 1: </label>
+                <div class="team-select" id="team1-3v3">
                     <!-- Dynamicky naplněno hráči -->
-                </select>
-                <label for="team2-3v3">Tým 2: </label>
-                <select id="team2-3v3" name="team2-3v3" multiple size="3">
+                </div>
+                <label for="team2-3v3" id="team2-label-3v3">Tým 2: </label>
+                <div class="team-select" id="team2-3v3">
                     <!-- Dynamicky naplněno hráči -->
-                </select>
+                </div>
             </div>
 
             <!-- Výběr hráčů pro 2v2 -->
             <div>
                 <h3>2v2 Zápas</h3>
-                <label for="team1-2v2">Tým 1: </label>
-                <select id="team1-2v2" name="team1-2v2" multiple size="2">
+                <label for="team1-2v2" id="team1-label-2v2">Tým 1: </label>
+                <div class="team-select" id="team1-2v2">
                     <!-- Dynamicky naplněno hráči -->
-                </select>
-                <label for="team2-2v2">Tým 2: </label>
-                <select id="team2-2v2" name="team2-2v2" multiple size="2">
+                </div>
+                <label for="team2-2v2" id="team2-label-2v2">Tým 2: </label>
+                <div class="team-select" id="team2-2v2">
                     <!-- Dynamicky naplněno hráči -->
-                </select>
+                </div>
             </div>
 
             <!-- Výběr hráčů pro 1v1 -->
             <div>
                 <h3>1v1 Zápas</h3>
-                <label for="team1-1v1">Tým 1: </label>
+                <label for="team1-1v1" id="team1-label-1v1">Tým 1: </label>
                 <select id="team1-1v1" name="team1-1v1">
                     <!-- Dynamicky naplněno hráči -->
                 </select>
-                <label for="team2-1v1">Tým 2: </label>
+                <label for="team2-1v1" id="team2-label-1v1">Tým 2: </label>
                 <select id="team2-1v1" name="team2-1v1">
                     <!-- Dynamicky naplněno hráči -->
                 </select>
@@ -87,26 +96,53 @@
         // Funkce pro naplnění výběrů hráčů
         function populateSelects() {
             const selects = [
-                { selectId: 'team1-3v3', players: team1Players, size: 3 },
-                { selectId: 'team2-3v3', players: team2Players, size: 3 },
-                { selectId: 'team1-2v2', players: team1Players, size: 2 },
-                { selectId: 'team2-2v2', players: team2Players, size: 2 },
-                { selectId: 'team1-1v1', players: team1Players, size: 1 },
-                { selectId: 'team2-1v1', players: team2Players, size: 1 },
+                { selectId: 'team1-3v3', players: team1Players, count: 3 },
+                { selectId: 'team2-3v3', players: team2Players, count: 3 },
+                { selectId: 'team1-2v2', players: team1Players, count: 2 },
+                { selectId: 'team2-2v2', players: team2Players, count: 2 },
+                { selectId: 'team1-1v1', players: team1Players, count: 1 },
+                { selectId: 'team2-1v1', players: team2Players, count: 1 }
             ];
 
-            selects.forEach(({ selectId, players, size }) => {
+            selects.forEach(({ selectId, players, count }) => {
                 const selectElement = document.getElementById(selectId);
                 // Vymažeme stávající možnosti
                 selectElement.innerHTML = "";
-                selectElement.size = size; // Nastavení velikosti podle počtu hráčů pro výběr
-                players.forEach(player => {
-                    const option = document.createElement('option');
-                    option.value = player.id;
-                    option.textContent = player.name;
-                    selectElement.appendChild(option);
-                });
+
+                // Pokud je to 3v3 nebo 2v2, přidáme více rolovacích seznamů
+                if (count > 1) {
+                    for (let i = 0; i < count; i++) {
+                        const select = document.createElement('select');
+                        select.name = `${selectId}-player${i + 1}`;
+                        players.forEach(player => {
+                            const option = document.createElement('option');
+                            option.value = player.id;
+                            option.textContent = player.name;
+                            select.appendChild(option);
+                        });
+                        selectElement.appendChild(select);
+                    }
+                } else {
+                    // Pro 1v1 se používá jeden select
+                    const select = document.createElement('select');
+                    select.name = `${selectId}-player1`;
+                    players.forEach(player => {
+                        const option = document.createElement('option');
+                        option.value = player.id;
+                        option.textContent = player.name;
+                        select.appendChild(option);
+                    });
+                    selectElement.appendChild(select);
+                }
             });
+
+            // Nastavení skutečných názvů týmů do labelů
+            document.getElementById('team1-label-3v3').textContent = `Tým 1 (${team1Name}):`;
+            document.getElementById('team2-label-3v3').textContent = `Tým 2 (${team2Name}):`;
+            document.getElementById('team1-label-2v2').textContent = `Tým 1 (${team1Name}):`;
+            document.getElementById('team2-label-2v2').textContent = `Tým 2 (${team2Name}):`;
+            document.getElementById('team1-label-1v1').textContent = `Tým 1 (${team1Name}):`;
+            document.getElementById('team2-label-1v1').textContent = `Tým 2 (${team2Name}):`;
         }
 
         // Naplnit výběry hráčů
