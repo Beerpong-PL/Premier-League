@@ -27,11 +27,11 @@
             <!-- Výběr hráčů pro 3v3 -->
             <div>
                 <h3>3v3 Zápas</h3>
-                <label for="team1-3v3" id="team1-label-3v3">Tým 1: </label>
+                <label for="team1-3v3">Tým 1: </label>
                 <div class="team-select" id="team1-3v3">
                     <!-- Dynamicky naplněno hráči -->
                 </div>
-                <label for="team2-3v3" id="team2-label-3v3">Tým 2: </label>
+                <label for="team2-3v3">Tým 2: </label>
                 <div class="team-select" id="team2-3v3">
                     <!-- Dynamicky naplněno hráči -->
                 </div>
@@ -40,11 +40,11 @@
             <!-- Výběr hráčů pro 2v2 -->
             <div>
                 <h3>2v2 Zápas</h3>
-                <label for="team1-2v2" id="team1-label-2v2">Tým 1: </label>
+                <label for="team1-2v2">Tým 1: </label>
                 <div class="team-select" id="team1-2v2">
                     <!-- Dynamicky naplněno hráči -->
                 </div>
-                <label for="team2-2v2" id="team2-label-2v2">Tým 2: </label>
+                <label for="team2-2v2">Tým 2: </label>
                 <div class="team-select" id="team2-2v2">
                     <!-- Dynamicky naplněno hráči -->
                 </div>
@@ -53,11 +53,11 @@
             <!-- Výběr hráčů pro 1v1 -->
             <div>
                 <h3>1v1 Zápas</h3>
-                <label for="team1-1v1" id="team1-label-1v1">Tým 1: </label>
+                <label for="team1-1v1">Tým 1: </label>
                 <select id="team1-1v1" name="team1-1v1">
                     <!-- Dynamicky naplněno hráči -->
                 </select>
-                <label for="team2-1v1" id="team2-label-1v1">Tým 2: </label>
+                <label for="team2-1v1">Tým 2: </label>
                 <select id="team2-1v1" name="team2-1v1">
                     <!-- Dynamicky naplněno hráči -->
                 </select>
@@ -135,14 +135,6 @@
                     selectElement.appendChild(select);
                 }
             });
-
-            // Nastavení skutečných názvů týmů do labelů
-            document.getElementById('team1-label-3v3').textContent = `Tým 1 (${team1Name}):`;
-            document.getElementById('team2-label-3v3').textContent = `Tým 2 (${team2Name}):`;
-            document.getElementById('team1-label-2v2').textContent = `Tým 1 (${team1Name}):`;
-            document.getElementById('team2-label-2v2').textContent = `Tým 2 (${team2Name}):`;
-            document.getElementById('team1-label-1v1').textContent = `Tým 1 (${team1Name}):`;
-            document.getElementById('team2-label-1v1').textContent = `Tým 2 (${team2Name}):`;
         }
 
         // Naplnit výběry hráčů
