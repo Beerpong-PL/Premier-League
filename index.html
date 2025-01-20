@@ -2,8 +2,10 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Česká Beerpongová Premier League</title>
     <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
     <header>
@@ -12,9 +14,7 @@
             <ul>
                 <li><a href="#o-lize">O lize</a></li>
                 <li><a href="#tymy">Týmy</a></li>
-                <li><a href="#rozpis">Rozpis zápasů</a></li>
-                <li><a href="#tabulka">Tabulka</a></li>
-                <li><a href="#pravidla">Pravidla</a></li>
+                <li><a href="#turnaj">Turnaj</a></li>
                 <li><a href="#kontakt">Kontakt</a></li>
             </ul>
         </nav>
@@ -27,22 +27,25 @@
 
     <section id="tymy">
         <h2>Týmy</h2>
-        <p>Seznam týmů bude brzy aktualizován.</p>
+        <ul id="team-list">
+            <!-- Týmy budou doplněny dynamicky pomocí JavaScriptu -->
+        </ul>
     </section>
 
-    <section id="rozpis">
-        <h2>Rozpis zápasů</h2>
-        <p>Rozpis zápasů bude brzy zveřejněn.</p>
-    </section>
-
-    <section id="tabulka">
-        <h2>Tabulka</h2>
-        <p>Aktuální tabulka bude brzy dostupná.</p>
-    </section>
-
-    <section id="pravidla">
-        <h2>Pravidla</h2>
-        <p>Podrobná pravidla ligy budou brzy k dispozici.</p>
+    <section id="turnaj">
+        <h2>Turnaj #1</h2>
+        <div class="group">
+            <h3>Skupina A</h3>
+            <ul id="group-a-matches">
+                <!-- Zápasy skupiny A -->
+            </ul>
+        </div>
+        <div class="group">
+            <h3>Skupina B</h3>
+            <ul id="group-b-matches">
+                <!-- Zápasy skupiny B -->
+            </ul>
+        </div>
     </section>
 
     <footer id="kontakt">
