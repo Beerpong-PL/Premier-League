@@ -6,41 +6,38 @@
     <title>Zápas 3v3</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        .button-section {
+        .button-group {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin: 20px 0;
         }
-
-        .button-section button {
+        .button-group button {
             padding: 10px;
-            background-color: #4CAF50; /* Zelené */
-            color: white;
+            font-size: 16px;
             border: none;
             cursor: pointer;
-            font-size: 16px;
         }
-
-        .button-section button.red {
-            background-color: #f44336; /* Červené */
+        .button-group .green {
+            background-color: #4CAF50;
+            color: white;
         }
-
-        table {
+        .button-group .red {
+            background-color: #f44336;
+            color: white;
+        }
+        .stats-table {
             width: 80%;
-            margin: 20px auto;
+            margin: 0 auto;
             border-collapse: collapse;
         }
-
-        th, td {
-            padding: 10px;
+        .stats-table th, .stats-table td {
             border: 1px solid #ddd;
+            padding: 8px;
             text-align: center;
+        }
+        .stats-table th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
@@ -49,48 +46,33 @@
         <h1>Zápas 3v3</h1>
     </header>
 
-    <!-- Sekce pro tři zelená tlačítka -->
-    <section class="button-section" id="team1-buttons">
-        <!-- Dynamicky doplněno tlačítky týmu 1 -->
+    <section id="action-buttons">
+        <h2>Začínající tým</h2>
+        <div class="button-group" id="starting-team-buttons">
+            <!-- Zelená a červená tlačítka pro začínající tým -->
+        </div>
     </section>
 
-    <!-- Tabulka statistik -->
-    <table>
-        <thead>
-            <tr>
-                <th>Jméno hráče</th>
-                <th>Trefené kelímky / Celkový počet hodů</th>
-                <th>Procentuální úspěšnost</th>
-            </tr>
-        </thead>
-        <tbody id="team1-stats">
-            <!-- Dynamicky doplněno statistikami týmu 1 -->
-        </tbody>
-    </table>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Jméno hráče</th>
-                <th>Trefené kelímky / Celkový počet hodů</th>
-                <th>Procentuální úspěšnost</th>
-            </tr>
-        </thead>
-        <tbody id="team2-stats">
-            <!-- Dynamicky doplněno statistikami týmu 2 -->
-        </tbody>
-    </table>
-
-    <!-- Sekce pro tři červená tlačítka -->
-    <section class="button-section" id="team2-buttons">
-        <!-- Dynamicky doplněno tlačítky týmu 2 -->
+    <section id="statistics">
+        <h2>Statistiky týmů</h2>
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th>Jméno hráče</th>
+                    <th>Trefené / Celkové hody</th>
+                    <th>Úspěšnost (%)</th>
+                </tr>
+            </thead>
+            <tbody id="team1-stats">
+                <!-- Statistika hráčů týmu 1 -->
+            </tbody>
+            <tbody id="team2-stats">
+                <!-- Statistika hráčů týmu 2 -->
+            </tbody>
+        </table>
     </section>
 
     <script>
-        // Načtení vybraných hráčů z localStorage
-        const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers')) || {};
-
-        // Data o hráčích
         const players = [
             { id: 1, name: 'Fanda', team: 'BPC Praha' },
             { id: 2, name: 'Saša', team: 'BPC Praha' },
@@ -106,70 +88,89 @@
             { id: 12, name: 'Lucka', team: 'BPC Votice' }
         ];
 
-        // Vybraní hráči pro tým 1 a tým 2
-        const team1Players = Object.values(selectedPlayers).filter((_, index) => index < 3);
-        const team2Players = Object.values(selectedPlayers).filter((_, index) => index >= 3 && index < 6);
+        const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers')) || {};
+        const startingTeam = localStorage.getItem('startingTeam'); // 'team1' nebo 'team2'
 
-        // Statistika hráčů
-        const playerStats = {};
+        const team1Players = [
+            players.find(p => p.id == selectedPlayers['team1-3v3-player1']),
+            players.find(p => p.id == selectedPlayers['team1-3v3-player2']),
+            players.find(p => p.id == selectedPlayers['team1-3v3-player3'])
+        ];
 
-        function initializeStats(playerIds) {
-            playerIds.forEach(playerId => {
-                if (!playerStats[playerId]) {
-                    playerStats[playerId] = { hits: 0, throws: 0 };
-                }
+        const team2Players = [
+            players.find(p => p.id == selectedPlayers['team2-3v3-player1']),
+            players.find(p => p.id == selectedPlayers['team2-3v3-player2']),
+            players.find(p => p.id == selectedPlayers['team2-3v3-player3'])
+        ];
+
+        const playerStats = JSON.parse(localStorage.getItem('playerStats')) || {};
+
+        function createActionButton(player, isGreen) {
+            const button = document.createElement('button');
+            button.textContent = player.name;
+            button.classList.add(isGreen ? 'green' : 'red');
+            button.addEventListener('click', () => {
+                updatePlayerStats(player.id, isGreen ? 'hit' : 'miss');
+            });
+            return button;
+        }
+
+        function updatePlayerStats(playerId, action) {
+            if (!playerStats[playerId]) {
+                playerStats[playerId] = { hits: 0, throws: 0 };
+            }
+
+            playerStats[playerId].throws++;
+            if (action === 'hit') {
+                playerStats[playerId].hits++;
+            }
+
+            localStorage.setItem('playerStats', JSON.stringify(playerStats));
+            updateStatistics();
+        }
+
+        function updateStatistics() {
+            const team1Stats = document.getElementById('team1-stats');
+            const team2Stats = document.getElementById('team2-stats');
+
+            team1Stats.innerHTML = '';
+            team2Stats.innerHTML = '';
+
+            team1Players.forEach(player => {
+                const stats = playerStats[player.id] || { hits: 0, throws: 0 };
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${player.name}</td>
+                    <td>${stats.hits} / ${stats.throws}</td>
+                    <td>${stats.throws ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00'}</td>
+                `;
+                team1Stats.appendChild(row);
+            });
+
+            team2Players.forEach(player => {
+                const stats = playerStats[player.id] || { hits: 0, throws: 0 };
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${player.name}</td>
+                    <td>${stats.hits} / ${stats.throws}</td>
+                    <td>${stats.throws ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00'}</td>
+                `;
+                team2Stats.appendChild(row);
             });
         }
 
-        function updateStats(playerId, isHit) {
-            playerStats[playerId].throws++;
-            if (isHit) {
-                playerStats[playerId].hits++;
-            }
-            renderStats();
+        function populateActionButtons() {
+            const startingTeamButtons = document.getElementById('starting-team-buttons');
+            const startingPlayers = startingTeam === 'team1' ? team1Players : team2Players;
+
+            startingPlayers.forEach(player => {
+                startingTeamButtons.appendChild(createActionButton(player, true));
+                startingTeamButtons.appendChild(createActionButton(player, false));
+            });
         }
 
-        function renderStats() {
-            const renderTeamStats = (teamStats, playerIds) => {
-                teamStats.innerHTML = '';
-                playerIds.forEach(playerId => {
-                    const player = players.find(p => p.id == playerId);
-                    const stats = playerStats[playerId];
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${player.name}</td>
-                        <td>${stats.hits} / ${stats.throws}</td>
-                        <td>${stats.throws ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00'}%</td>
-                    `;
-                    teamStats.appendChild(row);
-                });
-            };
-
-            renderTeamStats(document.getElementById('team1-stats'), team1Players);
-            renderTeamStats(document.getElementById('team2-stats'), team2Players);
-        }
-
-        function renderButtons() {
-            const renderTeamButtons = (container, playerIds, isHitButton) => {
-                container.innerHTML = '';
-                playerIds.forEach(playerId => {
-                    const player = players.find(p => p.id == playerId);
-                    const button = document.createElement('button');
-                    button.textContent = player.name;
-                    button.classList.add(isHitButton ? 'green' : 'red');
-                    button.addEventListener('click', () => updateStats(playerId, isHitButton));
-                    container.appendChild(button);
-                });
-            };
-
-            renderTeamButtons(document.getElementById('team1-buttons'), team1Players, true);
-            renderTeamButtons(document.getElementById('team2-buttons'), team2Players, false);
-        }
-
-        // Inicializace
-        initializeStats([...team1Players, ...team2Players]);
-        renderButtons();
-        renderStats();
+        populateActionButtons();
+        updateStatistics();
     </script>
 </body>
 </html>
