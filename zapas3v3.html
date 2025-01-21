@@ -87,103 +87,107 @@
 
     <script>
         const players = [
-            { id: 1, name: 'Fanda', team: 'BPC Praha' },
-            { id: 2, name: 'Saša', team: 'BPC Praha' },
-            { id: 3, name: 'Míra', team: 'BPC Praha' },
-            { id: 4, name: 'Julča', team: 'BPC Praha' },
-            { id: 5, name: 'Fasty', team: 'BPC Praha' },
-            { id: 6, name: 'Adam', team: 'BPC Praha' },
-            { id: 7, name: 'Dodo', team: 'BPC Votice' },
-            { id: 8, name: 'Písa', team: 'BPC Votice' },
-            { id: 9, name: 'Buky', team: 'BPC Votice' },
-            { id: 10, name: 'Kuba', team: 'BPC Votice' },
-            { id: 11, name: 'Terka', team: 'BPC Votice' },
-            { id: 12, name: 'Lucka', team: 'BPC Votice' }
-        ];
+    { id: 1, name: 'Fanda', team: 'BPC Praha' },
+    { id: 2, name: 'Saša', team: 'BPC Praha' },
+    { id: 3, name: 'Míra', team: 'BPC Praha' },
+    { id: 4, name: 'Julča', team: 'BPC Praha' },
+    { id: 5, name: 'Fasty', team: 'BPC Praha' },
+    { id: 6, name: 'Adam', team: 'BPC Praha' },
+    { id: 7, name: 'Dodo', team: 'BPC Votice' },
+    { id: 8, name: 'Písa', team: 'BPC Votice' },
+    { id: 9, name: 'Buky', team: 'BPC Votice' },
+    { id: 10, name: 'Kuba', team: 'BPC Votice' },
+    { id: 11, name: 'Terka', team: 'BPC Votice' },
+    { id: 12, name: 'Lucka', team: 'BPC Votice' }
+];
 
-        const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers')) || {};
-        const startingTeam = localStorage.getItem('startingTeam'); // 'team1' nebo 'team2'
+const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers')) || {};
+const startingTeam = localStorage.getItem('startingTeam'); // 'team1' nebo 'team2'
 
-        const team1Players = [
-            players.find(p => p.id == selectedPlayers['team1-3v3-player1']),
-            players.find(p => p.id == selectedPlayers['team1-3v3-player2']),
-            players.find(p => p.id == selectedPlayers['team1-3v3-player3'])
-        ];
+// Vybereme hráče pro oba týmy
+const team1Players = [
+    players.find(p => p.id == selectedPlayers['team1-3v3-player1']),
+    players.find(p => p.id == selectedPlayers['team1-3v3-player2']),
+    players.find(p => p.id == selectedPlayers['team1-3v3-player3'])
+];
 
-        const team2Players = [
-            players.find(p => p.id == selectedPlayers['team2-3v3-player1']),
-            players.find(p => p.id == selectedPlayers['team2-3v3-player2']),
-            players.find(p => p.id == selectedPlayers['team2-3v3-player3'])
-        ];
+const team2Players = [
+    players.find(p => p.id == selectedPlayers['team2-3v3-player1']),
+    players.find(p => p.id == selectedPlayers['team2-3v3-player2']),
+    players.find(p => p.id == selectedPlayers['team2-3v3-player3'])
+];
 
-        const playerStats = JSON.parse(localStorage.getItem('playerStats')) || {};
+// Funkce pro vytvoření tlačítka pro akci hráče
+function createActionButton(player, isGreen) {
+    const button = document.createElement('button');
+    button.textContent = player.name;
+    button.classList.add(isGreen ? 'green' : 'red');
+    button.addEventListener('click', () => {
+        updatePlayerStats(player.id, isGreen ? 'hit' : 'miss');
+    });
+    return button;
+}
 
-        function createActionButton(player, isGreen) {
-            const button = document.createElement('button');
-            button.textContent = player.name;
-            button.classList.add(isGreen ? 'green' : 'red');
-            button.addEventListener('click', () => {
-                updatePlayerStats(player.id, isGreen ? 'hit' : 'miss');
-            });
-            return button;
-        }
+// Funkce pro aktualizaci statistik hráčů
+function updatePlayerStats(playerId, action) {
+    const playerStats = JSON.parse(localStorage.getItem('playerStats')) || {};
+    if (!playerStats[playerId]) {
+        playerStats[playerId] = { hits: 0, throws: 0 };
+    }
 
-        function updatePlayerStats(playerId, action) {
-            if (!playerStats[playerId]) {
-                playerStats[playerId] = { hits: 0, throws: 0 };
-            }
+    playerStats[playerId].throws++;
+    if (action === 'hit') {
+        playerStats[playerId].hits++;
+    }
 
-            playerStats[playerId].throws++;
-            if (action === 'hit') {
-                playerStats[playerId].hits++;
-            }
+    localStorage.setItem('playerStats', JSON.stringify(playerStats));
+    updateStatistics();
+}
 
-            localStorage.setItem('playerStats', JSON.stringify(playerStats));
-            updateStatistics();
-        }
+// Funkce pro zobrazení statistik
+function updateStatistics() {
+    const team1Stats = document.getElementById('team1-stats');
+    const team2Stats = document.getElementById('team2-stats');
+    team1Stats.innerHTML = '';
+    team2Stats.innerHTML = '';
 
-        function updateStatistics() {
-            const team1Stats = document.getElementById('team1-stats');
-            const team2Stats = document.getElementById('team2-stats');
+    team1Players.forEach(player => {
+        const stats = playerStats[player.id] || { hits: 0, throws: 0 };
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${player.name}</td>
+            <td>${stats.hits} / ${stats.throws}</td>
+            <td>${stats.throws ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00'}</td>
+        `;
+        team1Stats.appendChild(row);
+    });
 
-            team1Stats.innerHTML = '';
-            team2Stats.innerHTML = '';
+    team2Players.forEach(player => {
+        const stats = playerStats[player.id] || { hits: 0, throws: 0 };
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${player.name}</td>
+            <td>${stats.hits} / ${stats.throws}</td>
+            <td>${stats.throws ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00'}</td>
+        `;
+        team2Stats.appendChild(row);
+    });
+}
 
-            team1Players.forEach(player => {
-                const stats = playerStats[player.id] || { hits: 0, throws: 0 };
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${player.name}</td>
-                    <td>${stats.hits} / ${stats.throws}</td>
-                    <td>${stats.throws ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00'}</td>
-                `;
-                team1Stats.appendChild(row);
-            });
+// Funkce pro naplnění tlačítek pro začínající tým
+function populateActionButtons() {
+    const startingTeamButtons = document.getElementById('starting-team-buttons');
+    const startingPlayers = startingTeam === 'team1' ? team1Players : team2Players;
 
-            team2Players.forEach(player => {
-                const stats = playerStats[player.id] || { hits: 0, throws: 0 };
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${player.name}</td>
-                    <td>${stats.hits} / ${stats.throws}</td>
-                    <td>${stats.throws ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00'}</td>
-                `;
-                team2Stats.appendChild(row);
-            });
-        }
+    startingPlayers.forEach(player => {
+        startingTeamButtons.appendChild(createActionButton(player, true)); // Zelené tlačítko
+        startingTeamButtons.appendChild(createActionButton(player, false)); // Červené tlačítko
+    });
+}
 
-        function populateActionButtons() {
-            const startingTeamButtons = document.getElementById('starting-team-buttons');
-            const startingPlayers = startingTeam === 'team1' ? team1Players : team2Players;
-
-            startingPlayers.forEach(player => {
-                startingTeamButtons.appendChild(createActionButton(player, true));
-                startingTeamButtons.appendChild(createActionButton(player, false));
-            });
-        }
-
-        populateActionButtons();
-        updateStatistics();
+// Zavoláme funkce pro naplnění tlačítek a statistik
+populateActionButtons();
+updateStatistics();
     </script>
 </body>
 </html>
