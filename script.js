@@ -1,6 +1,4 @@
-// script.js
-
-// Předdefinovaní hráči s opraveným názvem klíče 'team' místo 'teams'
+// Data hráčů
 const players = [
     { id: 1, name: 'Fanda', team: 'BPC Praha' },
     { id: 2, name: 'Saša', team: 'BPC Praha' },
@@ -16,50 +14,70 @@ const players = [
     { id: 12, name: 'Lucka', team: 'BPC Votice' }
 ];
 
-// Seznam týmů
-const teams = [
-    "BPC Příbram", "BPC Kosova Hora", "BPC Struhařov", "BPV Svatá Máří",
-    "BPC Kostelec nad Orlicí", "BPC Praha", "BPC Votice", "BPC Brno",
-    "Kozleři Mirošov", "BPC Plzeň"
-];
+// Rozdělení hráčů mezi týmy
+const team1Players = players.slice(0, 6); // Tým 1 (prvních 6 hráčů)
+const team2Players = players.slice(6);   // Tým 2 (dalších 6 hráčů)
 
-// Rozdělení do dvou skupin
-const groupA = teams.slice(0, 5);
-const groupB = teams.slice(5);
+// Inicializace statistik hráčů
+const playerStats = players.reduce((acc, player) => {
+    acc[player.id] = { hits: 0, throws: 0 }; // Každý hráč začíná s nulou
+    return acc;
+}, {});
 
-// Funkce na generování zápasů
-function generateMatches(group) {
-    const matches = [];
-    for (let i = 0; i < group.length; i++) {
-        for (let j = i + 1; j < group.length; j++) {
-            matches.push(`${group[i]} vs ${group[j]}`);
-        }
-    }
-    return matches;
+// Funkce pro vykreslení tlačítek
+function createButtons(teamPlayers, containerId) {
+    const container = document.getElementById(containerId).querySelector('.buttons');
+    teamPlayers.forEach(player => {
+        const greenButton = document.createElement('button');
+        greenButton.textContent = `${player.name} (Trefa)`;
+        greenButton.className = 'green';
+        greenButton.addEventListener('click', () => updateStats(player.id, true));
+
+        const redButton = document.createElement('button');
+        redButton.textContent = `${player.name} (Minuta)`;
+        redButton.className = 'red';
+        redButton.addEventListener('click', () => updateStats(player.id, false));
+
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.justifyContent = 'space-between';
+        wrapper.appendChild(greenButton);
+        wrapper.appendChild(redButton);
+
+        container.appendChild(wrapper);
+    });
 }
 
-// Zobrazit týmy
-const teamList = document.getElementById("team-list");
-teams.forEach(team => {
-    const li = document.createElement("li");
-    li.textContent = team;
-    teamList.appendChild(li);
-});
+// Funkce pro aktualizaci statistik
+function updateStats(playerId, isHit) {
+    const stats = playerStats[playerId];
+    stats.throws++;
+    if (isHit) stats.hits++;
+    renderStatsTable();
+}
 
-// Zobrazit zápasy skupiny A
-const groupAMatches = generateMatches(groupA);
-const groupAList = document.getElementById("group-a-matches");
-groupAMatches.forEach(match => {
-    const li = document.createElement("li");
-    li.textContent = match;
-    groupAList.appendChild(li);
-});
+// Funkce pro vykreslení tabulky statistik
+function renderStatsTable() {
+    const tableBody = document.getElementById('stats-table');
+    tableBody.innerHTML = '';
 
-// Zobrazit zápasy skupiny B
-const groupBMatches = generateMatches(groupB);
-const groupBList = document.getElementById("group-b-matches");
-groupBMatches.forEach(match => {
-    const li = document.createElement("li");
-    li.textContent = match;
-    groupBList.appendChild(li);
-});
+    players.forEach(player => {
+        const stats = playerStats[player.id];
+        const successRate = stats.throws > 0 ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00';
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${player.name}</td>
+            <td>${player.team}</td>
+            <td>${stats.hits} / ${stats.throws}</td>
+            <td>${successRate}%</td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+}
+
+// Inicializace tlačítek a tabulky
+createButtons(team1Players, 'team1-buttons');
+createButtons(team2Players, 'team2-buttons');
+renderStatsTable();
