@@ -4,203 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zápas 3v3</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .team-section {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        .team-section .player-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .team-section .player-buttons button {
-            padding: 10px;
-            background-color: #4CAF50; /* Zelené */
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .team-section .player-buttons button:disabled {
-            background-color: #c0c0c0;
-        }
-        .statistics {
-            margin: 20px 0;
-        }
-        .statistics table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .statistics table th, .statistics table td {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-        .miss-buttons {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        .miss-buttons button {
-            padding: 10px;
-            background-color: #f44336; /* Červené */
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
+    <link rel="stylesheet" href="stylezapas.css">
 </head>
 <body>
     <header>
         <h1>Zápas 3v3</h1>
     </header>
 
-    <section class="team-section">
-        <div>
-            <h3>Tým 1</h3>
-            <div class="player-buttons" id="team1-buttons">
-                <!-- Dynamicky naplněné tlačítky pro hráče -->
-            </div>
-        </div>
-
-        <div>
-            <h3>Statistiky</h3>
-            <div class="statistics">
-                <table id="statistics-table">
-                    <thead>
-                        <tr>
-                            <th>Jméno hráče</th>
-                            <th>Trefené / Hod</th>
-                            <th>Úspěšnost (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Dynamicky naplněno statistikami hráčů -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div>
-            <h3>Tým 2</h3>
-            <div class="player-buttons" id="team2-buttons">
-                <!-- Dynamicky naplněné tlačítky pro hráče -->
-            </div>
-        </div>
+    <!-- Horní část - zelená tlačítka -->
+    <section class="top-buttons">
+        <button id="green-btn-1">Hráč 1</button>
+        <button id="green-btn-2">Hráč 2</button>
+        <button id="green-btn-3">Hráč 3</button>
     </section>
 
-    <section class="miss-buttons">
-        <div>
-            <h3>Neúspěšné hody</h3>
-            <div id="team1-miss-buttons">
-                <!-- Dynamicky naplněné tlačítky pro minulé hráče -->
-            </div>
-        </div>
-
-        <div>
-            <h3>Neúspěšné hody</h3>
-            <div id="team2-miss-buttons">
-                <!-- Dynamicky naplněné tlačítky pro minulé hráče -->
-            </div>
-        </div>
+    <!-- Střední část - Tabulka pro tým 1 a tým 2 -->
+    <section class="statistics">
+        <h2>Statistiky</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Jméno hráče</th>
+                    <th>Trefené kelímky / Celkový počet hodů</th>
+                    <th>Procentuální úspěšnost</th>
+                </tr>
+            </thead>
+            <tbody id="team1-table">
+                <!-- Dynamicky naplněno hráči týmu 1 -->
+            </tbody>
+            <tbody id="team2-table">
+                <!-- Dynamicky naplněno hráči týmu 2 -->
+            </tbody>
+        </table>
     </section>
 
-    <script>
-       // Načteme vybrané hráče z localStorage
-    const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers'));
+    <!-- Spodní část - červená tlačítka -->
+    <section class="bottom-buttons">
+        <button id="red-btn-1">Neúspěch 1</button>
+        <button id="red-btn-2">Neúspěch 2</button>
+        <button id="red-btn-3">Neúspěch 3</button>
+    </section>
 
-    // Získání hráčů pro tým 1 a tým 2
-    const team1Players = [];
-    const team2Players = [];
-
-    Object.keys(selectedPlayers).forEach(key => {
-        const playerId = selectedPlayers[key];
-        if (key.includes('team1-3v3')) {
-            team1Players.push(playerId);
-        } else if (key.includes('team2-3v3')) {
-            team2Players.push(playerId);
-        }
-    });
-
-    // Funkce pro vytvoření tlačítek pro hráče
-    function createPlayerButtons(players, teamNumber) {
-        return players.map((playerId, index) => {
-            const player = playersData.find(p => p.id == playerId);
-            const button = document.createElement('button');
-            button.textContent = `${player.name} (Tým ${teamNumber})`;
-            button.dataset.playerId = player.id;
-            button.dataset.team = teamNumber;
-            button.classList.add(teamNumber === 1 ? 'green' : 'red');
-            button.addEventListener('click', (e) => {
-                updatePlayerStats(e.target.dataset.playerId, teamNumber === 1 ? 'hit' : 'miss');
-            });
-            return button;
-        });
-    }
-
-    // Statistika pro hráče
-    const playersData = [
-        { id: 1, name: 'Fanda' },
-        { id: 2, name: 'Saša' },
-        { id: 3, name: 'Míra' },
-        { id: 4, name: 'Julča' },
-        { id: 5, name: 'Fasty' },
-        { id: 6, name: 'Adam' },
-        { id: 7, name: 'Dodo' },
-        { id: 8, name: 'Písa' },
-        { id: 9, name: 'Buky' },
-        { id: 10, name: 'Kuba' },
-        { id: 11, name: 'Terka' },
-        { id: 12, name: 'Lucka' }
-    ];
-
-    // Uložení statistiky do localStorage nebo inicializace
-    const playerStats = JSON.parse(localStorage.getItem('playerStats')) || {};
-
-    function updatePlayerStats(playerId, action) {
-        if (!playerStats[playerId]) {
-            playerStats[playerId] = { hits: 0, throws: 0 };
-        }
-
-        playerStats[playerId].throws++;
-        if (action === 'hit') {
-            playerStats[playerId].hits++;
-        }
-
-        localStorage.setItem('playerStats', JSON.stringify(playerStats));
-        updateStatsTable();
-    }
-
-    function updateStatsTable() {
-        const tableBody = document.getElementById('stats-table').getElementsByTagName('tbody')[0];
-        tableBody.innerHTML = '';
-        
-        [...team1Players, ...team2Players].forEach(playerId => {
-            const player = playersData.find(p => p.id == playerId);
-            const stats = playerStats[playerId] || { hits: 0, throws: 0 };
-            const row = tableBody.insertRow();
-            row.innerHTML = `
-                <td>${player.name}</td>
-                <td>${stats.hits} / ${stats.throws}</td>
-                <td>${stats.throws ? ((stats.hits / stats.throws) * 100).toFixed(2) : '0.00'}</td>
-            `;
-        });
-    }
-
-    // Dynamicky naplnit tlačítka pro tým 1 a tým 2
-    const team1Buttons = document.getElementById('team1-buttons');
-    const team2Buttons = document.getElementById('team2-buttons');
-    createPlayerButtons(team1Players, 1).forEach(button => team1Buttons.appendChild(button));
-    createPlayerButtons(team2Players, 2).forEach(button => team2Buttons.appendChild(button));
-    
-    updateStatsTable(); // Inicializace statistik
-});
-    </script>
+    <script src="script.js"></script>
+</body>
+</html>
