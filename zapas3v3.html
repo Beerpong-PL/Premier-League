@@ -27,9 +27,11 @@
             color: white;
         }
         .stats-table {
-            width: 80%;
-            margin: 0 auto;
+            width: 40%;
+            margin: 20px;
             border-collapse: collapse;
+            display: inline-block;
+            vertical-align: top;
         }
         .stats-table th, .stats-table td {
             border: 1px solid #ddd;
@@ -55,21 +57,32 @@
 
     <section id="statistics">
         <h2>Statistiky týmů</h2>
-        <table class="stats-table">
-            <thead>
-                <tr>
-                    <th>Jméno hráče</th>
-                    <th>Trefené / Celkové hody</th>
-                    <th>Úspěšnost (%)</th>
-                </tr>
-            </thead>
-            <tbody id="team1-stats">
-                <!-- Statistika hráčů týmu 1 -->
-            </tbody>
-            <tbody id="team2-stats">
-                <!-- Statistika hráčů týmu 2 -->
-            </tbody>
-        </table>
+        <div>
+            <table class="stats-table" id="team1-table">
+                <thead>
+                    <tr>
+                        <th>Jméno hráče</th>
+                        <th>Trefené / Celkové hody</th>
+                        <th>Úspěšnost (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="team1-stats">
+                    <!-- Statistika hráčů týmu 1 -->
+                </tbody>
+            </table>
+            <table class="stats-table" id="team2-table">
+                <thead>
+                    <tr>
+                        <th>Jméno hráče</th>
+                        <th>Trefené / Celkové hody</th>
+                        <th>Úspěšnost (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="team2-stats">
+                    <!-- Statistika hráčů týmu 2 -->
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <script>
