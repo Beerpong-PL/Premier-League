@@ -4,45 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zápas 3v3</title>
-    <link rel="stylesheet" href="stylezapas.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>Zápas 3v3</h1>
     </header>
 
-    <!-- Horní část - zelená tlačítka -->
-    <section class="top-buttons">
-        <button id="green-btn-1">Hráč 1</button>
-        <button id="green-btn-2">Hráč 2</button>
-        <button id="green-btn-3">Hráč 3</button>
+    <!-- Horní část - tlačítka hráčů -->
+    <section class="player-buttons">
+        <div id="team1-buttons" class="team-section">
+            <h2>Tým 1</h2>
+            <div class="buttons"></div>
+        </div>
+        <div id="team2-buttons" class="team-section">
+            <h2>Tým 2</h2>
+            <div class="buttons"></div>
+        </div>
     </section>
 
-    <!-- Střední část - Tabulka pro tým 1 a tým 2 -->
+    <!-- Tabulka statistik -->
     <section class="statistics">
         <h2>Statistiky</h2>
         <table>
             <thead>
                 <tr>
                     <th>Jméno hráče</th>
+                    <th>Tým</th>
                     <th>Trefené kelímky / Celkový počet hodů</th>
                     <th>Procentuální úspěšnost</th>
                 </tr>
             </thead>
-            <tbody id="team1-table">
-                <!-- Dynamicky naplněno hráči týmu 1 -->
-            </tbody>
-            <tbody id="team2-table">
-                <!-- Dynamicky naplněno hráči týmu 2 -->
+            <tbody id="stats-table">
+                <!-- Dynamicky naplněno statistikami hráčů -->
             </tbody>
         </table>
-    </section>
-
-    <!-- Spodní část - červená tlačítka -->
-    <section class="bottom-buttons">
-        <button id="red-btn-1">Neúspěch 1</button>
-        <button id="red-btn-2">Neúspěch 2</button>
-        <button id="red-btn-3">Neúspěch 3</button>
     </section>
 
     <script src="script.js"></script>
