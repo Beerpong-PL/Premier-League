@@ -62,6 +62,13 @@
                     <!-- Dynamicky naplněno hráči -->
                 </div>
             </div>
+            <div>
+                <label for="team-select">Vyberte začinající tým: </label>
+                <select id="team-select" name="team-select">
+                    <!-- Možnosti se naplní dynamicky -->
+                </select>
+            </div>
+
 
             <button type="submit">Potvrdit nastavení</button>
         </form>
@@ -136,28 +143,46 @@
                 }
             });
         }
+        function populateTeamSelect() {
+    const teamSelect = document.getElementById('team-select');
+
+    // Vymažeme existující možnosti
+    teamSelect.innerHTML = "";
+
+    // Přidáme možnosti pro oba týmy
+    const teams = [team1Name, team2Name];
+    teams.forEach(team => {
+        const option = document.createElement('option');
+        option.value = team;
+        option.textContent = team;
+        teamSelect.appendChild(option);
+    });
+}
+
 
         // Naplnit výběry hráčů
         populateSelects();
+        populateTeamSelect();
 
-        // Odeslání formuláře
         document.getElementById('settings-form').addEventListener('submit', function (e) {
-            e.preventDefault();
+    e.preventDefault();
 
-            const formData = new FormData(e.target);
-            const selectedPlayers = {};
+    const formData = new FormData(e.target);
+    const selectedPlayers = {};
+    const selectedTeam = formData.get('team-select'); // Získání vybraného týmu
 
-            // Uložení vybraných hráčů
-            formData.forEach((value, key) => {
-                selectedPlayers[key] = value;
-            });
+    // Uložení vybraných hráčů a týmu
+    formData.forEach((value, key) => {
+        selectedPlayers[key] = value;
+    });
+    selectedPlayers['selectedTeam'] = selectedTeam; // Přidání vybraného týmu
 
-            // Uložení vybraných hráčů do localStorage nebo poslat na server
-            localStorage.setItem('selectedPlayers', JSON.stringify(selectedPlayers));
+    localStorage.setItem('selectedPlayers', JSON.stringify(selectedPlayers));
 
-            // Potvrzení a přechod na další stránku
-            window.location.href = 'zapas3v3.html';  // Nebo jakákoli další stránka pro vykonání zápasu
-        });
+    // Přechod na další stránku
+    window.location.href = 'zapas3v3.html';
+    });
+
     </script>
 </body>
 </html>
